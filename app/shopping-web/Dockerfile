@@ -2,10 +2,10 @@
 FROM maven:3.8.6-openjdk-11-slim AS build
 
 # 작업 디렉토리 설정
-WORKDIR /app/shopping-web
+WORKDIR /gitops-repo/app/shopping-web
 
 # 소스 파일 복사
-COPY . /app/shopping-web
+COPY . /gitops-repo/app/shopping-web
 
 # Maven을 사용하여 애플리케이션 빌드 (패키징)
 RUN mvn clean package -DskipTests
