@@ -1,0 +1,41 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: shopping-web-pipeline
+spec:
+  params:
+    - name: IMAGE
+      type: string
+    - name: TAG
+      type: string
+    - name: GIT_USER
+      type: string
+    - name: GIT_EMAIL
+      type: string
+  workspaces:
+    - name: source
+    - name: docker-config
+    - name: gitops
+    - name: credentials  # <-- Secret용 워크스페이스 추가
+  tasks:
+    - name: build-and-update
+      taskRef:
+        name: build-and-update-gitops
+      params:
+        - name: IMAGE
+          value: "$(params.IMAGE)"
+        - name: TAG
+          value: "$(params.TAG)"
+        - name: GIT_USER
+          value: "$(params.GIT_USER)"
+        - name: GIT_EMAIL
+          value: "$(params.GIT_EMAIL)"
+      workspaces:
+        - name: source
+          workspace: source
+        - name: docker-config
+          workspace: docker-config
+        - name: gitops
+          workspace: gitops
+        - name: credentials  # <-- Secret용 워크스페이스 추가
+          workspace: credentials
