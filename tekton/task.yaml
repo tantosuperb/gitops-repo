@@ -23,7 +23,7 @@ spec:
       script: |
         set -ex
         git config --global credential.helper store
-        echo "https://$(cat /workspace/credentials/username):$(cat /workspace/credentials/password)@github.com" > /root/.git-credentials
+        echo "https://$(cat /workspace/credentials/username):$(cat /workspace/credentials/token)@github.com" > ~/.git-credentials
         rm -rf /workspace/source/*
         git clone https://github.com/tantosuperb/gitops-repo.git $(workspaces.source.path)
         ls -l $(workspaces.source.path)  # 경로 확인을 위한 디렉토리 목록 출력
@@ -53,7 +53,7 @@ spec:
         git config --global user.name "$(params.GIT_USER)"
         git config --global user.email "$(params.GIT_EMAIL)"
         git config --global credential.helper store
-        echo "https://$(cat $(workspaces.credentials.path)/username):$(cat $(workspaces.credentials.path)/token)@github.com" > ~/.git-credentials
+        echo "https://$(cat /workspace/credentials/username):$(cat /workspace/credentials/token)@github.com" > ~/.git-credentials
         git add .
         git commit -m "Update image to $(params.TAG)"
         git push origin main
