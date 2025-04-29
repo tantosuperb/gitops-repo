@@ -14,7 +14,7 @@ RUN mvn clean package -DskipTests
 FROM openjdk:11-jre-slim
 
 # 빌드된 JAR 파일을 컨테이너에 복사
-COPY --from=build /app/target/shopping-web-*.jar /shopping-web.jar
+COPY --from=build /workspace/source/app/shopping-web/target/shopping-1.0-SNAPSHOT.jar /shopping-web.jar
 
 # 애플리케이션 실행 명령 설정
 ENTRYPOINT ["java", "-jar", "/shopping-web.jar"]
