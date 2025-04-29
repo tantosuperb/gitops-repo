@@ -1,0 +1,66 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: build-and-update-gitops
+spec:
+  params:
+    - name: IMAGE
+      type: string
+    - name: TAG
+      type: string
+    - name: GIT_USER
+      type: string
+    - name: GIT_EMAIL
+      type: string
+  workspaces:
+    - name: source
+    - name: docker-config
+    - name: gitops
+    - name: credentials  # <-- Secret용 워크스페이스 추가
+  steps:
+    - name: clone-repository
+      image: alpine/git
+      script: |
+        set -ex
+        git config --global credential.helper store
+        echo "https://$(cat /workspace/credentials/username):$(cat /workspace/credentials/password)@github.com" > /root/.git-credentials
+        rm -rf /workspace/source/*
+        git clone https://github.com/tantosuperb/gitops-repo.git $(workspaces.source.path)
+        ls -l $(workspaces.source.path)  # 경로 확인을 위한 디렉토리 목록 출력
+    - name: build-image
+      image: gcr.io/kaniko-project/executor:latest
+      args:
+        - --context=$(workspaces.source.path) # 빌드할 경로 지정
+        - --dockerfile=$(workspaces.source.path)/app/shopping-web/Dockerfile # Dockerfile 경로 지정
+        - --destination=$(params.IMAGE):$(params.TAG)
+        - --skip-tls-verify
+        - --insecure
+      volumeMounts:
+        - mountPath: /kaniko/.docker
+          name: docker-config
+    - name: update-kustomize
+      image: alpine/git
+      script: |
+        set -ex
+        apk add --no-cache curl bash git kustomize
+        if [ -d "$(workspaces.source.path)/app/shopping-web" ]; then
+          cd $(workspaces.source.path)/app/shopping-web
+        else
+          echo "Directory not found: $(workspaces.source.path)/app/shopping-web"
+          exit 1
+        fi
+        kustomize edit set image shopping-web=$(params.IMAGE):$(params.TAG)
+        git config --global user.name "$(params.GIT_USER)"
+        git config --global user.email "$(params.GIT_EMAIL)"
+        git config --global credential.helper store
+        echo "https://$(cat $(workspaces.credentials.path)/username):$(cat $(workspaces.credentials.path)/password)@github.com" > ~/.git-credentials
+        git add .
+        git commit -m "Update image to $(params.TAG)"
+        git push origin main
+  volumes:
+    - name: docker-config
+      secret:
+        secretName: nhncloud-registry-secret
+        items:
+          - key: .dockerconfigjson
+            path: config.json
