@@ -17,7 +17,7 @@ spec:
       imagePullSecrets:
         - name: nhncloud-registry-secret
       containers:
-        - name: ec175433-kr1-registry.container.nhncloud.com/pub-real-kr1/shopping-web
+        - name: shopping-web
           image: shopping-web  # 이미지 이름만! 태그는 kustomization.yaml에서 설정
           ports:
             - containerPort: 3000
