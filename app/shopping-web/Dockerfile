@@ -5,7 +5,7 @@ FROM maven:3.8.6-openjdk-11-slim AS build
 WORKDIR /workspace/source/app/shopping-web
 
 # GitOps 레포지토리에서 소스 코드 복사
-COPY . /app
+COPY . .  # 현재 작업 디렉토리로 복사
 
 # Maven을 사용하여 애플리케이션 빌드 (패키징)
 RUN mvn clean package -DskipTests
@@ -14,7 +14,7 @@ RUN mvn clean package -DskipTests
 FROM openjdk:11-jre-slim
 
 # 빌드된 JAR 파일을 컨테이너에 복사
-COPY --from=build target/shopping-1.0-SNAPSHOT.jar /shopping-web.jar
+COPY --from=build /workspace/source/app/shopping-web/target/shopping-1.0-SNAPSHOT.jar /shopping-web.jar
 
 # 애플리케이션 실행 명령 설정
 ENTRYPOINT ["java", "-jar", "/shopping-web.jar"]
