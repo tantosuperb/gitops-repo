@@ -29,6 +29,13 @@
                 <configuration>
                     <mainClass>com.example.ShoppingWebApplication</mainClass> <!-- 엔트리 포인트 클래스 설정 -->
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal> <!-- 실행 가능한 JAR로 재패키징 -->
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
