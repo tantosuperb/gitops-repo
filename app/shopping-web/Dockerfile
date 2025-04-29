@@ -5,9 +5,7 @@ FROM maven:3.8.6-openjdk-11-slim AS build
 WORKDIR /workspace/source/app/shopping-web
 
 # GitOps 레포지토리에서 소스 코드 복사
-COPY ./src /workspace/source/app/shopping-web/src
-COPY ./pom.xml /workspace/source/app/shopping-web/
-
+COPY . /app
 # Maven을 사용하여 애플리케이션 빌드 (패키징)
 RUN mvn clean package -DskipTests
 
