@@ -2,8 +2,8 @@
 FROM maven:3.8.6-openjdk-11-slim AS build
 
 # 프로젝트 디렉토리로 복사
-WORKDIR /app
-COPY . /app
+WORKDIR /app/shopping-web
+COPY . /app/shopping-web
 
 # Maven을 사용하여 애플리케이션 빌드 (패키징)
 RUN mvn clean package -DskipTests
