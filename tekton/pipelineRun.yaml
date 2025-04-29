@@ -1,0 +1,30 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: shopping-web-pipelinerun
+spec:
+  params:
+    - name: GIT_USER
+      value: tantosuperb
+    - name: GIT_EMAIL
+      value: tantosuperb@gmail.com
+    - name: IMAGE
+      value: ec175433-kr1-registry.container.nhncloud.com/pub-real-kr1/shopping-web
+    - name: TAG
+      value: latest
+  pipelineRef:
+    name: shopping-web-pipeline
+  workspaces:
+    - name: source
+      emptyDir: {}  # git clone 등을 위한 공간
+    - name: docker-config
+      secret:
+        secretName: nhncloud-registry-secret
+        items:
+        - key: .dockerconfigjson
+          path: config.json
+    - name: gitops
+      emptyDir: {}  # kustomize update 후 커밋 등에 사용
+    - name: credentials
+      secret:
+        secretName: git-credentials  # git clone/push 인증용
