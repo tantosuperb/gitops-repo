@@ -1,0 +1,18 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: update-kustomize
+spec:
+  workspaces:
+    - name: source
+  steps:
+    - name: update
+      image: alpine/git
+      script: |
+        cd /workspace/source/app/shopping-web
+        git config --global user.email "tekton@example.com"
+        git config --global user.name "tekton"
+        sed -i 's/newTag:.*/newTag: latest/' kustomization.yaml
+        git add kustomization.yaml
+        git commit -m "Update image tag to latest"
+        git push
