@@ -18,4 +18,4 @@ COPY --from=build /app/target/shopping-web-*.jar /shopping-web.jar
 ENTRYPOINT ["java", "-jar", "/shopping-web.jar"]
 
 # 외부에서 접근할 포트
-EXPOSE 8080
+EXPOSE 8090
