@@ -4,4 +4,5 @@ resources:
 
 images:
   - name: shopping-web
-    newTag: v1.2.3
+    newName: ec175433-kr1-registry.container.nhncloud.com/pub-real-kr1/shopping-web
+    newTag: latest
