@@ -1,4 +1,8 @@
-FROM eclipse-temurin:17-jre-alpine
+FROM golang:1.20 AS builder
 WORKDIR /app
-COPY build/libs/shopping-web-*.jar app.jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
+COPY . .
+RUN go build -o shopping-web
+
+FROM alpine:latest
+COPY --from=builder /app/shopping-web /shopping-web
+ENTRYPOINT ["/shopping-web"]
