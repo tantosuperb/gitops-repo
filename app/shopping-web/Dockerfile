@@ -5,7 +5,7 @@ FROM maven:3.8.6-openjdk-11-slim AS build
 WORKDIR /workspace/source/app/shopping-web  # Tekton의 작업공간에 맞게 수정
 RUN ls -al
 # 소스 파일 복사
-COPY . /workspace/source/app/shopping-web/  # 디렉토리 경로 끝에 슬래시(/) 추가
+COPY . /workspace/source/app/  # 디렉토리 경로 끝에 슬래시(/) 추가
 RUN ls -al
 # Maven을 사용하여 애플리케이션 빌드 (패키징)
 RUN mvn clean package -DskipTests
