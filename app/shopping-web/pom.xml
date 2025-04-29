@@ -27,7 +27,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.7.6</version>
                 <configuration>
-                    <mainClass>com.example.ShoppingApplication</mainClass> <!-- 엔트리 포인트 클래스 설정 -->
+                    <mainClass>com.example.ShoppingWebApplication</mainClass> <!-- 엔트리 포인트 클래스 설정 -->
                 </configuration>
             </plugin>
             <plugin>
