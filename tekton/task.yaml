@@ -53,7 +53,7 @@ spec:
         git config --global user.name "$(params.GIT_USER)"
         git config --global user.email "$(params.GIT_EMAIL)"
         git config --global credential.helper store
-        echo "https://$(cat $(workspaces.credentials.path)/username):$(cat $(workspaces.credentials.path)/password)@github.com" > ~/.git-credentials
+        echo "https://$(cat $(workspaces.credentials.path)/username):$(cat $(workspaces.credentials.path)/token)@github.com" > ~/.git-credentials
         git add .
         git commit -m "Update image to $(params.TAG)"
         git push origin main
