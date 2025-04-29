@@ -20,7 +20,7 @@ spec:
         - name: shopping-web
           image: shopping-web  # 이미지 이름만! 태그는 kustomization.yaml에서 설정
           ports:
-            - containerPort: 3000
+            - containerPort: 8090
           resources:
             requests:
               cpu: "100m"
@@ -31,6 +31,6 @@ spec:
           readinessProbe:
             httpGet:
               path: /
-              port: 3000
+              port: 8090
             initialDelaySeconds: 5
             periodSeconds: 10
