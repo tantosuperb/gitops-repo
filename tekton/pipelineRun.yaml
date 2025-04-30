@@ -27,4 +27,4 @@ spec:
       emptyDir: {}  # kustomize update 후 커밋 등에 사용
     - name: credentials
       secret:
-        secretName: git-credentials  # git clone/push 인증용
+        secretName: gitops-secret  # git clone/push 인증용
