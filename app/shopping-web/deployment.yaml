@@ -32,5 +32,5 @@ spec:
             httpGet:
               path: /
               port: 8090
-            initialDelaySeconds: 10  # 10초로 늘려서 애플리케이션 초기화 대기
+            initialDelaySeconds: 60  # 10초로 늘려서 애플리케이션 초기화 대기
             periodSeconds: 10
