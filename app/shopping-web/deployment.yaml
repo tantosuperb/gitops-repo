@@ -30,7 +30,7 @@ spec:
               memory: "256Mi"
           readinessProbe:
             httpGet:
-              path: /
+              path: /actuator/health
               port: 8090
-            initialDelaySeconds: 60  # 10초로 늘려서 애플리케이션 초기화 대기
+            initialDelaySeconds: 20
             periodSeconds: 10
