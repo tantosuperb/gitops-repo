@@ -1,5 +1,6 @@
 # 빌드 단계 (Maven 이미지 사용)
 FROM maven:3.8.6-openjdk-11-slim AS build
+RUN apt-get update && apt-get install -y curl
 
 # 작업 디렉토리 설정 (컨테이너 내에서 작업할 디렉토리)
 WORKDIR /workspace/source/app/shopping-web
