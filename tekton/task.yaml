@@ -16,28 +16,30 @@ spec:
     - name: source
     - name: docker-config
     - name: gitops
-    - name: credentials  # <-- Secret용 워크스페이스 추가
+    - name: credentials
   steps:
     - name: clone-repository
       image: alpine/git
       script: |
         set -ex
         git config --global credential.helper store
-        echo "https://$(cat /workspace/credentials/username):$(cat /workspace/credentials/token)@github.com" > ~/.git-credentials
-        rm -rf /workspace/source/*
+        echo "https://$(cat /workspace/credentials/username):$(cat /workspace/credentials/token)@github.com" > /root/.git-credentials
+        rm -rf $(workspaces.source.path)/*
         git clone https://github.com/tantosuperb/gitops-repo.git $(workspaces.source.path)
-        ls -l $(workspaces.source.path)  # 경로 확인을 위한 디렉토리 목록 출력
+        ls -l $(workspaces.source.path)
+
     - name: build-image
       image: gcr.io/kaniko-project/executor:latest
       args:
-        - --context=$(workspaces.source.path) # 빌드할 경로 지정
-        - --dockerfile=$(workspaces.source.path)/app/shopping-web/Dockerfile # Dockerfile 경로 지정
+        - --context=$(workspaces.source.path)
+        - --dockerfile=$(workspaces.source.path)/app/shopping-web/Dockerfile
         - --destination=$(params.IMAGE):$(params.TAG)
         - --skip-tls-verify
         - --insecure
       volumeMounts:
         - mountPath: /kaniko/.docker
           name: docker-config
+
     - name: update-kustomize
       image: alpine/git
       script: |
